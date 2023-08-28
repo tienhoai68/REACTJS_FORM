@@ -1,0 +1,14 @@
+[
+    {
+        "maSV": 1,
+        "name": "Nguyễn Hoài Tiến",
+        "phoneNumber": "12345678",
+        "email": "tien@gmail.com"
+    },
+    {
+        "maSV": 2,
+        "name": "Nguyễn Văn A",
+        "phoneNumber": "12345678",
+        "email": "a@gmail.com"
+    }
+]

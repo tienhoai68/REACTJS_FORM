@@ -51,8 +51,11 @@ class Form extends Component {
     }
     hanleCheckExistId = (value, ref, mess) => {
         let isExist = false;
-        const employee = this.props.listStudent.find(employee => value === employee.id);
-        isExist = !!employee;
+        this.props.listStudent.forEach(employee => {
+            if (Number(value) === employee.maSV) {
+                isExist = true;
+            }
+        });
         if (isExist) {
             ref.innerHTML = mess;
             return false;
@@ -65,30 +68,31 @@ class Form extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
         // console.log(this.state.maSV);
-        const findStudent = this.props.listStudent.find((user) => {
-            // console.log(user.maSV);
-            // console.log(this.state.maSV);
-            return user.maSV === this.state.maSV;
-        });
         // console.log(findStudent);
         // masv.map((element) => {
-        //     console.log(element.maSV);
-        //   return  element.maSV === this.state.maSV}
-        //     )
-        // console.log(masv);
-        let isValid = true;
-        isValid &= this.handleValidate(this.state.maSV, this.idInputRef.current, "(*) Vui lòng nhập maSV") && this.handleValidatePattern(this.state.maSV, this.idInputRef.current, "(*) MaSV vui lòng nhập số", /^(?:-(?:[1-9](?:\d{0,2}(?:,\d{3})+|\d*))|(?:0|(?:[1-9](?:\d{0,2}(?:,\d{3})+|\d*))))(?:.\d+|)$/) && this.hanleCheckExistId(this.state.maSV, this.idInputRef.current, "(*) MaSV đã tồn tại");
-        isValid &= this.handleValidate(this.state.name, this.nameInputRef.current, "(*) Vui lòng nhập Họ và tên") && this.handleValidatePattern(this.state.name, this.nameInputRef.current, "(*) Họ và tên vui lòng nhập chữ cái ", /^[a-zA-Z\sàáạãảâầấậẫẩăằắặẵẳèéẹẽẻêềếệễểđìíịĩỉòóọõỏôồốộỗổơờớợỡởùúụũủưừứựữửỳýỵỹỷ\s]+$/);
-        isValid &= this.handleValidate(this.state.phoneNumber, this.phoneInputRef.current, "(*) Vui lòng nhập số điện thoại") && this.handleValidatePattern(this.state.phoneNumber, this.phoneInputRef.current, "(*) Số điện thoại vui lòng nhập số", /^(?:-(?:[1-9](?:\d{0,2}(?:,\d{3})+|\d*))|(?:0|(?:[1-9](?:\d{0,2}(?:,\d{3})+|\d*))))(?:.\d+|)$/);
-        isValid &= this.handleValidate(this.state.email, this.emailInputRef.current, "(*) Vui lòng nhập email") && this.handleValidatePattern(this.state.email, this.emailInputRef.current, "(*) Vui lòng nhập email đúng định dạng", /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
-        if (isValid) {
+            //     console.log(element.maSV);
+            //   return  element.maSV === this.state.maSV}
+            //     )
+            // console.log(masv);
+            const findStudent = this.props.listStudent.find((user) => {
+                return user.maSV === this.state.maSV;
+            });
+            console.log(findStudent);
+            let isValid = true;
+            // && this.hanleCheckExistId(this.state.maSV, this.idInputRef.current, "(*) MaSV đã tồn tại")
+            isValid &= this.handleValidate(this.state.maSV, this.idInputRef.current, "(*) Vui lòng nhập maSV") && this.handleValidatePattern(this.state.maSV, this.idInputRef.current, "(*) MaSV vui lòng nhập số", /^(?:-(?:[1-9](?:\d{0,2}(?:,\d{3})+|\d*))|(?:0|(?:[1-9](?:\d{0,2}(?:,\d{3})+|\d*))))(?:.\d+|)$/) ;
+            isValid &= this.handleValidate(this.state.name, this.nameInputRef.current, "(*) Vui lòng nhập Họ và tên") && this.handleValidatePattern(this.state.name, this.nameInputRef.current, "(*) Họ và tên vui lòng nhập chữ cái ", /^[a-zA-Z\sàáạãảâầấậẫẩăằắặẵẳèéẹẽẻêềếệễểđìíịĩỉòóọõỏôồốộỗổơờớợỡởùúụũủưừứựữửỳýỵỹỷ\s]+$/);
+            isValid &= this.handleValidate(this.state.phoneNumber, this.phoneInputRef.current, "(*) Vui lòng nhập số điện thoại") && this.handleValidatePattern(this.state.phoneNumber, this.phoneInputRef.current, "(*) Số điện thoại vui lòng nhập số", /^(?:-(?:[1-9](?:\d{0,2}(?:,\d{3})+|\d*))|(?:0|(?:[1-9](?:\d{0,2}(?:,\d{3})+|\d*))))(?:.\d+|)$/);
+            isValid &= this.handleValidate(this.state.email, this.emailInputRef.current, "(*) Vui lòng nhập email") && this.handleValidatePattern(this.state.email, this.emailInputRef.current, "(*) Vui lòng nhập email đúng định dạng", /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
+            if (isValid) {
             // console.log(findStudent.maSV);
-            // if (findStudent.maSV === this.state.maSV) {
-            //     console.log(123);
-            //     // this.props.dispatch(updateStudent(this.state))
-            // } else {
-            // }
-            this.props.dispatch(addStudent(this.state))
+            debugger
+            if (this.state.maSV) {
+                console.log(123);
+                this.props.dispatch(addStudent(this.state))
+            } else if (findStudent.maSV === this.state.maSV) {
+                this.props.dispatch(updateStudent(this.state))
+            }
         }
         // this.setState({
         //     maSV: "",

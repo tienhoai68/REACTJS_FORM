@@ -1,9 +1,16 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { deleteStudent, selectedStudent } from '../../stote/actions/studentActions';
 
 class StudentManagement extends Component {
+    state ={
+        keyword: "",
+    }
     renderContent = () => {
-        return this.props.listStudent.map((student, index) => {
+        const data = this.props.listStudent.filter((element) => {
+            return element.name.toLowerCase().indexOf(this.state.keyword.toLowerCase()) !== -1;
+        })
+        return data.map((student, index) => {
             const backGround =  index % 2 === 0 ? "bg-secondary text-white" : "bg-info text-white";
             const { maSV, name, phoneNumber, email } = student;
             return (
@@ -13,14 +20,19 @@ class StudentManagement extends Component {
                     <td>{email}</td>
                     <td>{phoneNumber}</td>
                     <td>
-                        <button className="btn btn-success mr-2">EDIT</button>
-                        <button className="btn btn-danger">DELETE</button>
+                        <button onClick={() => this.props.dispatch(selectedStudent(student))} className="btn btn-success mr-2">EDIT</button>
+                        <button onClick={() => this.props.dispatch(deleteStudent(student))} className="btn btn-danger">DELETE</button>
                     </td>
                 </tr>
 
             )
         })
     };
+    handleChange = (event) => {
+        this.setState({
+            keyword: event.target.value,
+        })
+    }
     render() {
         return (
             <div className="card p-0 mt-3">
@@ -29,6 +41,7 @@ class StudentManagement extends Component {
                     <div className="col-4">
                         <div className="form-group mb-0">
                             <input
+                            onChange={this.handleChange}
                                 type="text"
                                 placeholder="Search by full name..."
                                 className="form-control"

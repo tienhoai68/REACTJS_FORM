@@ -1,8 +1,27 @@
-import { ADD_STUDENT } from "../types/studentType"
+import { ADD_STUDENT, DELETE_STUDENT, SELECTED_STUDENT, UPDATE_STUDENT } from "../types/studentType"
 
 export const addStudent = (data) => {
     return {
         type : ADD_STUDENT,
+        payload: data,
+    }
+}
+
+export const selectedStudent = (data) => {
+    return {
+        type: SELECTED_STUDENT,
+        payload: data,
+    }
+}
+export const updateStudent = (data) => {
+    return {
+        type: UPDATE_STUDENT,
+        payload : data,
+    }
+};
+export const deleteStudent = (data) => {
+    return {
+        type: DELETE_STUDENT,
         payload: data,
     }
 }

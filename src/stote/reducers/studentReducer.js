@@ -14,6 +14,7 @@ if (stringify) {
 export const studentReducer = (state = DEFAULT_STATE, action) => {
     switch (action.type) {
         case ADD_STUDENT: {
+            action.payload.id = Math.random();
             state.listStudent = [...state.listStudent, action.payload];
             localStorage.setItem("LIST_STUDENT", JSON.stringify(state.listStudent));
             break;

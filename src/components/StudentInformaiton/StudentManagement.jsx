@@ -5,7 +5,7 @@ import { deleteStudent, selectedStudent } from '../../stote/actions/studentActio
 class StudentManagement extends Component {
     state ={
         keyword: "",
-    }
+    };
     renderContent = () => {
         const data = this.props.listStudent.filter((element) => {
             return element.name.toLowerCase().indexOf(this.state.keyword.toLowerCase()) !== -1;
@@ -62,11 +62,11 @@ class StudentManagement extends Component {
                     <table className="table">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>Code</th>
                                 <th>Full Name</th>
                                 <th>Email</th>
                                 <th>Phone Number</th>
-                                <th></th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>

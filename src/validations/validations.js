@@ -1,5 +1,5 @@
 export const handleCheckExistCode = (value, ref, mess, listStudent) => {
-    debugger
+    // debugger
     let isExist = false;
     listStudent.forEach(employee => {
         if (Number(value) === Number(employee.maSV)) {

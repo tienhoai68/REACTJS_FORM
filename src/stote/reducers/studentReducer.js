@@ -1,9 +1,11 @@
 import data from "../../Data/listStudent.json"
-import { ADD_STUDENT, DELETE_STUDENT, SELECTED_STUDENT, UPDATE_STUDENT } from "../types/studentType";
+import { ADD_STUDENT, DELETE_STUDENT, SELECTED_STUDENT, SET_EDITING, UPDATE_STUDENT } from "../types/studentType";
 
 const DEFAULT_STATE = {
     listStudent: data,
     selectedStudent: null,
+    // tạo thêm isEditing để khi nhấn edit thì cập nhật lại thành true
+    isEditing: false,
 };
 const stringify = localStorage.getItem("LIST_STUDENT");
 if (stringify) {
@@ -20,11 +22,16 @@ export const studentReducer = (state = DEFAULT_STATE, action) => {
             break;
         };
         case SELECTED_STUDENT: {
-            // console.log(action.payload);
             state.selectedStudent = action.payload;
-            console.log(state.selectedStudent);
             break;
         };
+        case SET_EDITING:
+            // console.log(action);
+            return {
+                ...state,
+                // thay đổi trạng thái thành true
+                isEditing: action.payload,
+            };
         case UPDATE_STUDENT: {
             const data = [...state.listStudent];
             const index = data.findIndex((element => element.maSV === action.payload.maSV));

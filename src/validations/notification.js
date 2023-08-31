@@ -1,16 +1,6 @@
-export const disableError = (ref) => {
-    // ref.style.display = "none";
-    ref.innerHTML = "";
-};
-export const hiddenError = (maSV, name, phoneNumber, email) => {
-    const errors = [
-        maSV,
-        name,
-        phoneNumber,
-        email,
-    ];
-
-    errors.forEach((ref) => {
-        disableError(ref);
-    });
-};
+export const clearError = (refName) => {
+    const inputRef = refName;
+    if (inputRef.current.innerHTML) {
+        inputRef.current.innerHTML = "";
+    }
+}

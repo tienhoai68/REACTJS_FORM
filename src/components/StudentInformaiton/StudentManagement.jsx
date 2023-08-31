@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { deleteStudent, selectedStudent } from '../../stote/actions/studentActions';
-
+import { deleteStudent, selectedStudent, setEditing } from '../../stote/actions/studentActions';
+import Swal from 'sweetalert2';
 class StudentManagement extends Component {
-    state ={
+    state = {
         keyword: "",
     };
     renderContent = () => {
@@ -11,7 +11,7 @@ class StudentManagement extends Component {
             return element.name.toLowerCase().indexOf(this.state.keyword.toLowerCase()) !== -1;
         })
         return data.map((student, index) => {
-            const backGround =  index % 2 === 0 ? "bg-secondary text-white" : "bg-info text-white";
+            const backGround = index % 2 === 0 ? "bg-secondary text-white" : "bg-info text-white";
             const { maSV, name, phoneNumber, email } = student;
             return (
                 <tr key={maSV} className={backGround}>
@@ -20,10 +20,39 @@ class StudentManagement extends Component {
                     <td>{email}</td>
                     <td>{phoneNumber}</td>
                     <td>
-                        <button onClick={() => this.props.dispatch(selectedStudent(student))} className="btn btn-success mr-2">EDIT</button>
-                        <button onClick={() => this.props.dispatch(deleteStudent(student))} className="btn btn-danger">DELETE</button>
+                        {/* <button onClick={() => this.props.dispatch(selectedStudent(student))} className="btn btn-success mr-2">EDIT</button> */}
+                        <button
+                            onClick={() => {
+                                this.props.dispatch(selectedStudent(student));
+                                // Cập nhật state isEditing thành true khi nhấn nút "EDIT"
+                                this.props.dispatch(setEditing(true));
+                            }}
+                            className="btn btn-success mr-2"
+                        >
+                            EDIT
+                        </button>
+                        <button onClick={() =>
+                            Swal.fire({
+                                title: 'Are you sure?',
+                                text: "You won't be able to revert this!",
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Yes, delete it!'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.props.dispatch(deleteStudent(student))
+                                    Swal.fire(
+                                        `Delete  success!`,
+                                        'Your data has been deleted.',
+                                        'success'
+                                    )
+                                }
+                            })
+                        } className="btn btn-danger">DELETE</button>
                     </td>
-                </tr>
+                </tr >
 
             )
         })
@@ -41,7 +70,7 @@ class StudentManagement extends Component {
                     <div className="col-4">
                         <div className="form-group mb-0">
                             <input
-                            onChange={this.handleChange}
+                                onChange={this.handleChange}
                                 type="text"
                                 placeholder="Search by full name..."
                                 className="form-control"

@@ -1,4 +1,4 @@
-import { ADD_STUDENT, DELETE_STUDENT, SELECTED_STUDENT, UPDATE_STUDENT } from "../types/studentType"
+import { ADD_STUDENT, DELETE_STUDENT, SELECTED_STUDENT, SET_EDITING, UPDATE_STUDENT } from "../types/studentType"
 
 export const addStudent = (data) => {
     return {
@@ -24,4 +24,10 @@ export const deleteStudent = (data) => {
         type: DELETE_STUDENT,
         payload: data,
     }
-}
+};
+export const setEditing = (data) => {
+    return {
+        type: SET_EDITING,
+        payload: data,
+    };
+};

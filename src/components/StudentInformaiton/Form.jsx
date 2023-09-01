@@ -113,7 +113,7 @@ class Form extends Component {
                         <div className="row">
                             <div className="col-6">
                                 <div className="form-group">
-                                    <label><i class="fa-solid fa-id-card"></i> Code</label>
+                                    <label><i className="fa-solid fa-id-card"></i> Code</label>
                                     <input value={this.state.maSV} onChange={(event) => this.handleChange(event, this.codeInputRef)} name='maSV' type="text" disabled={this.props.isEditing}  className="form-control" />
                                     {/* logic (nếu this.props.isEditing == true) để kiểm tra nếu đang trong trạng thái "EDIT", thì thông báo lỗi sẽ ẩn đi:  */}
                                     <span ref={this.codeInputRef} className={`text-danger font-weight-bold ${this.props.isEditing ? clearError(this.codeInputRef) : ''}`}></span>
@@ -121,21 +121,21 @@ class Form extends Component {
                             </div>
                             <div className="col-6">
                                 <div className="form-group">
-                                    <label><i class="fa-solid fa-user"></i> Full Name</label>
+                                    <label><i className="fa-solid fa-user"></i> Full Name</label>
                                     <input value={this.state.name} onChange={(event) => this.handleChange(event, this.nameInputRef)} name='name' type="text" className="form-control" />
                                     <span ref={this.nameInputRef} className={`text-danger font-weight-bold ${this.props.isEditing ? clearError(this.nameInputRef) : ''}`}></span>
                                 </div>
                             </div>
                             <div className="col-6">
                                 <div className="form-group">
-                                    <label><i class="fa-solid fa-phone"></i> Phone Number</label>
+                                    <label><i className="fa-solid fa-phone"></i> Phone Number</label>
                                     <input value={this.state.phoneNumber} onChange={(event) => this.handleChange(event, this.phoneInputRef)} name='phoneNumber' type="text" className="form-control" />
                                     <span ref={this.phoneInputRef} className={`text-danger font-weight-bold ${this.props.isEditing ? clearError(this.phoneInputRef) : ''}`}></span>
                                 </div>
                             </div>
                             <div className="col-6">
                                 <div className="form-group">
-                                    <label><i class="fa-solid fa-envelope"></i> Email</label>
+                                    <label><i className="fa-solid fa-envelope"></i> Email</label>
                                     <input value={this.state.email} onChange={(event) => this.handleChange(event, this.emailInputRef)} name='email' type="text" className="form-control" />
                                     <span ref={this.emailInputRef} className={`text-danger font-weight-bold ${this.props.isEditing ? clearError(this.emailInputRef) : ''}`}></span>
                                 </div>

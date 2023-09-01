@@ -47,7 +47,7 @@ class StudentManagement extends Component {
                             }}
                             className="btn btn-warning mr-2"
                         >
-                           <i class="fa-solid fa-pen-to-square"></i>
+                           <i className="fa-solid fa-pen-to-square"></i>
                         </button>
                         <button onClick={() =>
                             Swal.fire({
@@ -68,7 +68,7 @@ class StudentManagement extends Component {
                                     )
                                 }
                             })
-                        } className="btn btn-danger"><i class="fa-solid fa-trash-can"></i></button>
+                        } className="btn btn-danger"><i className="fa-solid fa-trash-can"></i></button>
                     </td>
                 </tr >
 

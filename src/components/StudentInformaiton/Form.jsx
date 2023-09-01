@@ -1,8 +1,9 @@
 import React, { Component, createRef } from 'react'
 import { connect } from 'react-redux'
-import { addStudent, updateStudent } from '../../stote/actions/studentActions';
+import { addStudent, setEditing, updateStudent } from '../../stote/actions/studentActions';
 import { findCurrentEmail, handleCheckExistCode, handleCheckExistEmail, handleValidate, handleValidatePattern } from '../../validations/validations';
 import Swal from 'sweetalert2';
+import { clearError } from '../../features/clearError';
 class Form extends Component {
     codeInputRef = createRef();
     nameInputRef = createRef();
@@ -15,7 +16,7 @@ class Form extends Component {
         email: "",
     };
     static getDerivedStateFromProps(nextProps, currentState) {
-        if (nextProps.selectedStudent && nextProps.selectedStudent.maSV !== currentState.maSV) {
+        if (nextProps.selectedStudent && nextProps.selectedStudent.maSV !== currentState.maSV) {    
             currentState = nextProps.selectedStudent;
         }
         return currentState;
@@ -33,6 +34,7 @@ class Form extends Component {
 
     checkValidation = (isAdd, isExistEmail) => {
         let isValid = true;
+        // debugger
         if (isAdd) {
             isValid &= handleValidate(this.state.maSV, this.codeInputRef.current, "(*) Vui lòng nhập mã") && handleValidatePattern(this.state.maSV, this.codeInputRef.current, "(*) MaSV vui lòng nhập số", /^(?:-(?:[1-9](?:\d{0,2}(?:,\d{3})+|\d*))|(?:0|(?:[1-9](?:\d{0,2}(?:,\d{3})+|\d*))))(?:.\d+|)$/) && handleCheckExistCode(this.state.maSV, this.codeInputRef.current, "(*) MaSV đã tồn tại", this.props.listStudent);
         }
@@ -53,9 +55,11 @@ class Form extends Component {
             email: "",
         })
     };
-
+    
     handleSubmit = (event) => {
         event.preventDefault();
+        // console.log(this.props.isEditing = !this.props.isEditing);
+        
         if (this.state.id) {
             let currentEmail = findCurrentEmail(this.state.maSV, this.props.listStudent);
             let student;
@@ -76,19 +80,15 @@ class Form extends Component {
                 }).then((result) => {
                     if (result.isConfirmed) {
                         this.props.dispatch(updateStudent(this.state));
+                        this.props.dispatch(setEditing(false))
                         this.clearInput();
                         Swal.fire(
-                            `Update  success!`,
+                            `Update success!`,
                             'Your data has been Update.',
                             'success'
                         )
                     }
                 })
-                // Swal.fire(
-                //     'Update person success!',
-                //     'You clicked the button!',
-                //     'success'
-                // )
             }
         } else if (this.checkValidation(true, true)) {
             debugger
@@ -106,42 +106,43 @@ class Form extends Component {
         return (
             <div className="card p-0">
                 <div className="card-header bg-warning text-white font-weight-bold">
-                    Student Information
+                    STUDENT INFORMATION
                 </div>
                 <div className="card-body">
                     <form onSubmit={this.handleSubmit}>
                         <div className="row">
                             <div className="col-6">
                                 <div className="form-group">
-                                    <label>Code</label>
+                                    <label><i class="fa-solid fa-id-card"></i> Code</label>
                                     <input value={this.state.maSV} onChange={(event) => this.handleChange(event, this.codeInputRef)} name='maSV' type="text" disabled={this.props.isEditing}  className="form-control" />
                                     {/* logic (nếu this.props.isEditing == true) để kiểm tra nếu đang trong trạng thái "EDIT", thì thông báo lỗi sẽ ẩn đi:  */}
-                                    <span ref={this.codeInputRef} className={`text-danger font-weight-bold ${this.props.isEditing ? 'd-none' : ''}`}></span>
+                                    <span ref={this.codeInputRef} className={`text-danger font-weight-bold ${this.props.isEditing ? clearError(this.codeInputRef) : ''}`}></span>
                                 </div>
                             </div>
                             <div className="col-6">
                                 <div className="form-group">
-                                    <label>Full Name</label>
+                                    <label><i class="fa-solid fa-user"></i> Full Name</label>
                                     <input value={this.state.name} onChange={(event) => this.handleChange(event, this.nameInputRef)} name='name' type="text" className="form-control" />
-                                    <span ref={this.nameInputRef} className={`text-danger font-weight-bold ${this.props.isEditing ? 'd-none' : ''}`}></span>
+                                    <span ref={this.nameInputRef} className={`text-danger font-weight-bold ${this.props.isEditing ? clearError(this.nameInputRef) : ''}`}></span>
                                 </div>
                             </div>
                             <div className="col-6">
                                 <div className="form-group">
-                                    <label>Phone Number</label>
+                                    <label><i class="fa-solid fa-phone"></i> Phone Number</label>
                                     <input value={this.state.phoneNumber} onChange={(event) => this.handleChange(event, this.phoneInputRef)} name='phoneNumber' type="text" className="form-control" />
-                                    <span ref={this.phoneInputRef} className={`text-danger font-weight-bold ${this.props.isEditing ? 'd-none' : ''}`}></span>
+                                    <span ref={this.phoneInputRef} className={`text-danger font-weight-bold ${this.props.isEditing ? clearError(this.phoneInputRef) : ''}`}></span>
                                 </div>
                             </div>
                             <div className="col-6">
                                 <div className="form-group">
-                                    <label>Email</label>
+                                    <label><i class="fa-solid fa-envelope"></i> Email</label>
                                     <input value={this.state.email} onChange={(event) => this.handleChange(event, this.emailInputRef)} name='email' type="text" className="form-control" />
-                                    <span ref={this.emailInputRef} className={`text-danger font-weight-bold ${this.props.isEditing ? 'd-none' : ''}`}></span>
+                                    <span ref={this.emailInputRef} className={`text-danger font-weight-bold ${this.props.isEditing ? clearError(this.emailInputRef) : ''}`}></span>
                                 </div>
                             </div>
                         </div>
-                        <button className="btn btn-warning mr-2">SAVE</button>
+                        <button className="btn btn-success mr-2">SAVE</button>
+                        
                         <button type="reset" className="btn btn-outline-dark">RESET</button>
                     </form>
                 </div>

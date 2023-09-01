@@ -2,15 +2,34 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { deleteStudent, selectedStudent, setEditing } from '../../stote/actions/studentActions';
 import Swal from 'sweetalert2';
+import { sapXepTenAZ, sapXepTenZA } from '../../features/sortName';
 class StudentManagement extends Component {
     state = {
         keyword: "",
+        sortedList: [],
     };
+    handleSortName = (event) => {
+        const inputSort = event.target.value;
+        let sortedList;
+        if (inputSort === "AtoZ") {
+            sortedList = [...this.props.listStudent].sort(sapXepTenAZ); // Tạo một mảng mới sử dụng spread operator trước khi sắp xếp
+        } else if (inputSort === "ZtoA") {
+            sortedList = [...this.props.listStudent].sort(sapXepTenZA); // Tạo một mảng mới sử dụng spread operator trước khi sắp xếp
+        } else if (inputSort === "ZtoA") {
+
+        } else {
+            sortedList = [...this.props.listStudent];
+        }
+        this.setState({ sortedList }); // cập nhật sortedList
+    };
+
     renderContent = () => {
-        const data = this.props.listStudent.filter((element) => {
+        const {sortedList } = this.state;
+        const data = sortedList.length > 0 ? sortedList : this.props.listStudent;
+        const filteredData  = data.filter((element) => {
             return element.name.toLowerCase().indexOf(this.state.keyword.toLowerCase()) !== -1;
-        })
-        return data.map((student, index) => {
+        });
+        return filteredData.map((student, index) => {
             const backGround = index % 2 === 0 ? "bg-secondary text-white" : "bg-info text-white";
             const { maSV, name, phoneNumber, email } = student;
             return (
@@ -20,16 +39,15 @@ class StudentManagement extends Component {
                     <td>{email}</td>
                     <td>{phoneNumber}</td>
                     <td>
-                        {/* <button onClick={() => this.props.dispatch(selectedStudent(student))} className="btn btn-success mr-2">EDIT</button> */}
                         <button
                             onClick={() => {
                                 this.props.dispatch(selectedStudent(student));
                                 // Cập nhật state isEditing thành true khi nhấn nút "EDIT"
                                 this.props.dispatch(setEditing(true));
                             }}
-                            className="btn btn-success mr-2"
+                            className="btn btn-warning mr-2"
                         >
-                            EDIT
+                           <i class="fa-solid fa-pen-to-square"></i>
                         </button>
                         <button onClick={() =>
                             Swal.fire({
@@ -50,7 +68,7 @@ class StudentManagement extends Component {
                                     )
                                 }
                             })
-                        } className="btn btn-danger">DELETE</button>
+                        } className="btn btn-danger"><i class="fa-solid fa-trash-can"></i></button>
                     </td>
                 </tr >
 
@@ -79,10 +97,10 @@ class StudentManagement extends Component {
                     </div>
                     <div className="col-3 ml-auto">
                         <div className="form-group mb-0">
-                            <select className="form-control">
-                                <option>All</option>
-                                <option>Client</option>
-                                <option>Admin</option>
+                            <select onChange={this.handleSortName} className="form-control">
+                                <option value={0}>Sắp xếp theo tên</option>
+                                <option value={"AtoZ"}>từ A đến Z</option>
+                                <option value={"ZtoA"}>từ Z đến A</option>
                             </select>
                         </div>
                     </div>

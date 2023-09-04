@@ -91,7 +91,7 @@ class Form extends Component {
                 })
             }
         } else if (this.checkValidation(true, true)) {
-            debugger
+            // debugger
             this.props.dispatch(addStudent(this.state));
             this.clearInput();
             Swal.fire(

@@ -42,7 +42,7 @@ export const studentReducer = (state = DEFAULT_STATE, action) => {
             break;
         };
         case DELETE_STUDENT: {
-            console.log(action.payload);
+            // console.log(action.payload);
             const data = [...state.listStudent];
             const index = data.findIndex((element => element.maSV === action.payload.maSV));
             data.splice(index, 1);
